@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+
+<section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-3">
+
+            <!-- Profile Image -->
+            <div class="card card-primary card-outline">
+              <div class="card-body box-profile">
+                <div class="text-center">
+                  <img class="profile-user-img img-fluid img-circle"
+                       src="{% static 'dist/img/user4-128x128.jpg' %}"
+                       alt="User profile picture">
+                </div>
+
+                <h3 class="profile-username text-center">{{user.username}}</h3>
+
+
+
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+            <!-- About Me Box -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Tentang Saya</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <strong><i class="fas fa-book mr-1"></i> Sekolah Asal</strong>
+
+                <p class="text-muted">
+                  {{ user.first_name}}
+                </p>
+
+                <hr>
+
+                
+                
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-9">
+            <div class="card">
+              <div class="card-header p-2">
+                <ul class="nav nav-pills">
+                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Siswa Terdaftar</a></li>
+                </ul>
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="tab-content">
+                  <div class="active tab-pane" id="activity">
+                    <!-- Post -->
+                    <div class="post">
+                      <div class="user-block">
+                      	<table id="example2" class="table table-bordered table-hover" class="display" style="width:100%">
+                      		<thead>
+                      			<tr>
+                      				<td>NIS</td>
+                      				<td>Nama Siswa</td>
+                      				<td>Rata - Rata</td>
+                              {% if user.is_superuser %}  
+                              <td>Asal Sekolah</td>
+                              <td>Tujuan Sekolah</td>
+                              {% endif %}
+                      				<td>Keterangan</td>
+                      			</tr>	
+                      		</thead>
+                      		<tbody>
+                      	{% for d in data %}
+                      		<tr>
+                      			<td>{{ d.nis }}</td>
+                      			<td>{{ d.desc }}</td>
+                            <td>{{ d.nilai }}</td>
+                            {% if user.is_superuser %}
+                              <td>
+                                {{ d.asal }}
+                              </td>
+                              <td>
+                                {{ d.tujuan }}
+                              </td>
+                              
+                                {% if d.ket == '' %}
+                                <td>
+                                <a href="/pendaftar_lulus/{{ d.nis }}">
+                                  <button class="btn btn-md btn-success">
+                                    Lulus
+                                  </button>
+                                </a>
+                                |
+                                <a href="/pendaftar_gagal/{{ d.nis }}">
+                                  <button class="btn btn-md btn-danger">
+                                    Tidak Lulus
+                                  </button>
+                                </a>
+                                </td>
+                                {% elif d.ket == '0' %}
+                                  <td><button class="btn btn-md btn-danger">Tidak Lulus</button></td>
+                                {% elif d.ket == '1' %}
+                                  <td><button class="btn btn-md btn-success">Lulus</button></td>
+                                {% endif %}
+                                
+                              
+                            {% else%}
+                              {% if d.ket == '' %}
+                                <td><button class="btn btn-md btn-warning">Pending</button></td>
+                              {% elif d.ket == '0' %}
+                                <td><button class="btn btn-md btn-danger">Tidak Lulus</button></td>
+                              {% elif d.ket == '1' %}
+                                <td><button class="btn btn-md btn-success">Lulus</button></td>
+                              {% endif %}
+                            {% endif %}
+                            
+
+                      		</tr>
+                      	{% endfor %}
+                      	</tbody>
+                      	</table>
+
+                      
+
+                      
+                    </div>
+                    <!-- /.post -->
+
+                    <!-- Post -->
+                    
+                    <!-- /.post -->
+
+                    <!-- Post -->
+                    
+                    <!-- /.post -->
+                  </div>
+                  <!-- /.tab-pane -->
+                  
+                  <!-- /.tab-pane -->
+
+                  <div class="tab-pane" id="settings">
+                  </div>
+                  <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+              </div><!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+
+
+  <!-- {{ user.username }} -->
+{% else %}
+
+	<script type="text/javascript">
+		window.alert('Silahkan Login Terlebih Dahulu');
+    	window.location.href='{% url 'login' %}';
+	</script>
+ 
+{% endif %}
+{% endblock %}

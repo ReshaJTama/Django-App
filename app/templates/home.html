@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+
+	<div style="height: 25em;
+  line-height: 20em;
+  text-align: center;
+  border: 0px dashed #f69c55;">
+		<span style="vertical-align: middle;font-size: 24px;">Selamat Datang {{ user.first_name }} di Web Pendaftaran Peserta Didik baru</span>
+		<br>
+	</div>
+
+  <!-- {{ user.username }} -->
+{% else %}
+
+	<script type="text/javascript">
+		window.alert('Silahkan Login Terlebih Dahulu');
+    	window.location.href='{% url 'login' %}';
+	</script>
+ 
+{% endif %}
+{% endblock %}

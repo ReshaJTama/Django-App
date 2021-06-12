@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+
+	<!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Dashboard</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Info boxes -->
+        
+        <!-- /.row -->
+        {% if user.is_superuser %}
+            <div class="row">
+            
+            <a href="/list_sekolah/tambah"><button class="btn btn-md btn-primary">Tambah</button></a>
+            <!-- /.col -->
+            </div>
+        {% else %}
+            
+        {% endif %}
+        
+        <!-- /.row -->
+
+        <!-- Main row -->
+        <div class="row">
+          <!-- Left col -->
+          <div class="col-md-12">
+            <table id="example2" class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <td>NPSN</td>
+                  <td>Nama Sekolah</td>
+                  <td>Kabupaten/Kota</td>
+                  <td>Status</td>
+                  <td>Telp</td>
+                  {% if user.is_superuser %}
+
+                  <td>Action</td>
+
+                  {% endif %}
+                </tr>            
+              </thead>
+              
+              <tbody>
+            {% for d in data %}
+              <tr>
+              <td>{{ d.npsn }}</td>
+              <td>{{ d.desc }}</td>
+              <td>{{ d.distrik }}</td>
+              <td>{{ d.status }}</td>
+              <td>{{ d.telp }}</td>
+              {% if user.is_superuser %}
+              <td><a href="/list_sekolah/update/{{ d.npsn }}"><button class="btn btn-primary btn-md">Edit</button></a> | <a href="/list_sekolah/delete/{{ d.npsn }}"><button class="btn btn-danger btn-md">Delete</button></a></td>
+              {% endif %}
+              </tr>
+            {% endfor %}
+            </tbody>
+            </table>        
+          </div>
+
+			
+
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div><!--/. container-fluid -->
+    </section>
+    <!-- /.content -->
+
+
+
+	
+
+  
+{% else %}
+
+	<script type="text/javascript">
+		window.alert('Silahkan Login Terlebih Dahulu');
+    	window.location.href='{% url 'login' %}';
+	</script>
+ 
+{% endif %}
+{% endblock %}
